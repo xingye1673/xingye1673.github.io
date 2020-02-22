@@ -41,12 +41,24 @@
   
   <entry>
     <title>hexo test</title>
-    <link href="http://yoursite.com/2020/02/22/hexo-test/"/>
-    <id>http://yoursite.com/2020/02/22/hexo-test/</id>
+    <link href="http://yoursite.com/2020/02/22/%E4%BD%BF%E7%94%A8hexo%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/"/>
+    <id>http://yoursite.com/2020/02/22/%E4%BD%BF%E7%94%A8hexo%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/</id>
     <published>2020-02-22T07:27:04.000Z</published>
-    <updated>2020-02-22T07:27:04.610Z</updated>
+    <updated>2020-02-22T15:01:46.649Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>简单整理一下使用hexo搭建技术博客的流程，日后再细化</p></blockquote><ol><li><p>安装node，以本机arch linux为例</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S nodejs</span><br></pre></td></tr></table></figure></li><li><p>通过npm安装hexo</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli(可能需要sudo权限)</span><br></pre></td></tr></table></figure></li><li><p>初始化一个目录作为博客的工作目录</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init &lt;floder-name&gt;</span><br></pre></td></tr></table></figure></li><li><p>创建一篇博客文章</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &lt;title&gt;</span><br></pre></td></tr></table></figure></li><li><p>生成静态页面</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure></li><li><p>运行服务器</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure></li><li><p>进入<floder-name>/themes安装apollo主题及主题所需依赖</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;pinggod&#x2F;hexo-theme-apollo.git</span><br><span class="line">npm install --save hexo-renderer-jade hexo-generator-feed hexo-generator-sitemap hexo-browsersync hexo-generator-archive</span><br></pre></td></tr></table></figure></li><li><p>修改<floder-name>/vim _config.yml主题为apollo</p></li></ol><ol start="9"><li><p>安装git插件，同时修改<floder-name>/vim _config.yml中deploy的相关设置</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></li><li><p>安装hexo-admin，使可以通过web页面编写博客</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-admin</span><br></pre></td></tr></table></figure><p>hexo server -d</p></li></ol>]]></content>
     
     <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;简单整理一下使用hexo搭建技术博客的流程，日后再细化&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;安装node，以本机arch linux为例&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;
+      
     
     </summary>
     
