@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="zh-cn"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> CentOS7使用Kubeadm搭建K8S · Hexo</title><meta name="description" content="CentOS7使用Kubeadm搭建K8S - Josh"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="Hexo"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/xingye1673" target="_blank" class="nav-list-link">GITHUB</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">CentOS7使用Kubeadm搭建K8S</h1><div class="post-info">2020年2月22日</div><div class="post-content"><blockquote>
+<p>最近对容器技术比较感兴趣，一直想接触学习一下k8s，然而在搭建的时候总因为各种问题而失败。近期因为疫情原因一直在家中禁足，于是就重新尝试搭建一下k8s，CentOS7镜像使用官网下载的CentOS-7-x86_64-Minimal-1810版本，创建3个4C8G的虚拟机，1台Master和2台Slave，并均在root用户下操作。</p>
+</blockquote>
+<ol>
+<li><p>关闭防火墙</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable firewalld.service</span><br><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭swap分区</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">swapoff -a</span><br><span class="line">vim &#x2F;etc&#x2F;fstab  #文件删除swap分区所在的行</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置host和免密登录(非必要)</p>
+</li>
+<li><p>通过神奇♂的手段♀使部分域名访问畅通</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">*.grc.io</span><br><span class="line">*.quay.io</span><br><span class="line">*.k8s.io</span><br><span class="line">*.dl.k8s.io</span><br><span class="line">*.kubernetes.io</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置yml源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;yum.repos.d&#x2F;kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name&#x3D;Kubernetes</span><br><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;packages.cloud.google.com&#x2F;yum&#x2F;repos&#x2F;kubernetes-el7-x86_64</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgcheck&#x3D;1</span><br><span class="line">repo_gpgcheck&#x3D;1</span><br><span class="line">gpgkey&#x3D;https:&#x2F;&#x2F;packages.cloud.google.com&#x2F;yum&#x2F;doc&#x2F;yum-key.gpg https:&#x2F;&#x2F;packages.cloud.google.com&#x2F;yum&#x2F;doc&#x2F;rpm-package-key.gpg</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置SELinux</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0</span><br><span class="line">sed -i &#39;s&#x2F;^SELINUX&#x3D;enforcing$&#x2F;SELINUX&#x3D;permissive&#x2F;&#39; &#x2F;etc&#x2F;selinux&#x2F;config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用yum安装安装kubeadm和docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install kubelet-1.11.3</span><br><span class="line">yum install kubectl-1.11.3</span><br><span class="line">yum install kubeadm-1.11.3</span><br><span class="line">yum install docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动docker和kubelet</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable docker.service</span><br><span class="line">systemctl start docker.service</span><br><span class="line">systemctl enable --now kubelet</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建kubeadm.yaml文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: kubeadm.k8s.io&#x2F;v1alpha1</span><br><span class="line">kind: MasterConfiguration</span><br><span class="line">controllerManagerExtraArgs:</span><br><span class="line">  horizontal-pod-autoscaler-use-rest-clients: &quot;true&quot;</span><br><span class="line">  horizontal-pod-autoscaler-sync-period: &quot;10s&quot;</span><br><span class="line">  node-monitor-grace-period: &quot;10s&quot;</span><br><span class="line">apiServerExtraArgs:</span><br><span class="line">  runtime-config: &quot;api&#x2F;all&#x3D;true&quot;</span><br><span class="line">kubernetesVersion: &quot;stable-1.11&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建master节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init --config kubeadm.yaml</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将生成的 Kubernetes 集群的安全配置文件，保存到当前用户的.kube 目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p $HOME&#x2F;.kube</span><br><span class="line">sudo cp -i &#x2F;etc&#x2F;kubernetes&#x2F;admin.conf $HOME&#x2F;.kube&#x2F;config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME&#x2F;.kube&#x2F;config</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装k8s网络插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https:&#x2F;&#x2F;git.io&#x2F;weave-kube-1.6</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>slave节点根据master节点的相关提示执行kubeadm join xxx</p>
+</li>
+<li><p>master  kubectl get nodes</p>
+</li>
+</ol>
+</div></article></div></main><footer><div class="paginator"><a href="/2020/02/22/hexo-test/" class="next">下一篇</a></div><div class="copyright"><p>© 2016 - 2020 <a href="http://yoursite.com">Josh</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
